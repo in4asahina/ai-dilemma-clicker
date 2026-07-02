@@ -97,7 +97,7 @@ function pageHTML(t,i){
   const showForm=!readonly;
   const choicesHTML=isReflection?'':`<div class="choices">${choices.map(c=>`<button class="choice" data-choice="${c}" onclick="selectChoice('${t.id}','${c}')" ${readonly?'disabled':''}>${c}</button>`).join('')}</div>`;
   const reasonTitle=isReflection?'まとめ':'理由';
-  const placeholder=isReflection?'3つの事例を通して考えたこと、迷ったこと、必要だと思うルールなどを書いてください。':'ここに理由を入力してください。';
+  const placeholder=isReflection?'ここにまとめを入力してください。':'ここに理由を入力してください。';
   const reasonForm=showForm?`<h3>${reasonTitle}</h3><textarea id="comment-${t.id}" placeholder="${placeholder}" oninput="inputComment('${t.id}')">${escapeHTML(st.comment||'')}</textarea><div class="counter" id="counter-${t.id}"></div>`:'';
   const actionArea=showForm?`<div class="submitRow"><button class="submit" id="submit-${t.id}" onclick="submitTheme('${t.id}')">${st.submitted&&st.editing?'再投稿する':'投稿する'}</button><span class="hint" id="hint-${t.id}">${isReflection?'まとめを入力すると投稿できます。':'選択肢と理由の両方を入力すると投稿できます。'}</span><span class="editNote" id="editNote-${t.id}">修正後に「再投稿する」を押すと、投稿は累積されます。</span></div>`:`<div class="submitRow"><button class="editBtn" onclick="editTheme('${t.id}')">自分の投稿内容を修正する</button></div>`;
   const nav=`<div class="nav">${i===0?'<span class="spacer"></span>':`<button class="secondary" onclick="go(${i-1})">前のページへ</button>`}${i===themes.length-1?'':`<button onclick="go(${i+1})">次のページへ</button>`}</div>`;
