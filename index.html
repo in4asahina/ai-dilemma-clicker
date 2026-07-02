@@ -14,7 +14,7 @@
 body{margin:0;font-family:"Yu Gothic","Meiryo",system-ui,sans-serif;background:linear-gradient(180deg,#eef5ff 0%,var(--bg) 52%,#fff 100%);color:var(--ink)}
 header{background:rgba(255,255,255,.95);border-bottom:1px solid var(--line)}
 .wrap{max-width:1080px;margin:0 auto;padding:18px}
-h1{font-size:clamp(24px,4vw,42px);margin:8px 0 6px;color:#0f2f5f}
+h1{font-size:clamp(34px,5.2vw,64px);margin:10px 0 8px;color:#0f2f5f;font-weight:900;letter-spacing:.02em}
 h2{font-size:clamp(22px,3vw,34px);margin:6px 0 14px}
 h3{font-size:22px;margin:24px 0 10px;border-left:8px solid var(--blue);padding-left:10px}
 p{line-height:1.85;font-size:18px}.small{font-size:14px;color:var(--muted)}
@@ -26,15 +26,15 @@ textarea{width:100%;min-height:150px;border:2px solid var(--line);border-radius:
 .submitRow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px}.submit{display:none;border:0;border-radius:14px;background:#1d4ed8;color:#fff;font-size:19px;font-weight:800;padding:14px 26px;cursor:pointer}.submit.show{display:inline-block}.submit:disabled{opacity:.5;cursor:not-allowed}.editBtn{border:1px solid var(--line);border-radius:14px;background:#fff;color:#374151;font-weight:700;padding:13px 20px;cursor:pointer}.hint{padding:10px 12px;background:#fef2f2;color:#991b1b;border-radius:10px;display:none}.hint.show{display:inline-block}.editNote{display:none;padding:10px 12px;background:#fffbeb;color:#92400e;border-radius:10px}.editNote.show{display:inline-block}
 .myPost{display:none;background:#ecfdf5;border:1px solid #86efac;border-radius:16px;padding:16px;margin-top:18px}.myPost.show{display:block}.badge{display:inline-block;border-radius:999px;color:#fff;padding:7px 12px;font-weight:800;margin-bottom:8px}.badge.yes{background:var(--green)}.badge.maybeYes{background:var(--lime)}.badge.maybeNo{background:var(--orange)}.badge.no{background:var(--red)}
 .toggle{border:0;border-radius:14px;background:#111827;color:#fff;font-weight:800;padding:13px 20px;cursor:pointer;margin-top:14px}.others{display:none;border-top:1px dashed var(--line);margin-top:18px;padding-top:18px}.others.show{display:block}
-.chartTools{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}.chartTools button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-weight:800;cursor:pointer}.chartTools button.active{background:#1d4ed8;color:#fff;border-color:#1d4ed8}.chartArea{margin-bottom:26px}.bars{display:grid;gap:10px}.barLine{display:grid;grid-template-columns:150px 1fr 64px;gap:8px;align-items:center}.barBg{height:28px;background:#e5e7eb;border-radius:999px;overflow:hidden}.bar{height:100%;width:0%;border-radius:999px;transition:width .4s;background:#2563eb}
+.chartTools{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}.chartTools button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-weight:800;cursor:pointer}.chartTools button.active{background:#1d4ed8;color:#fff;border-color:#1d4ed8}.chartArea{margin-bottom:26px}.bars{display:grid;gap:10px}.barLine{display:grid;grid-template-columns:220px 1fr 80px;gap:8px;align-items:center}.barLine > div:first-child{white-space:nowrap}.barBg{height:28px;background:#e5e7eb;border-radius:999px;overflow:hidden}.bar{height:100%;width:0%;border-radius:999px;transition:width .4s;background:#2563eb}
 .pieWrap{display:grid;grid-template-columns:240px 1fr;gap:18px;align-items:center;margin-bottom:8px}.pieChart{width:220px;height:220px;border-radius:50%;border:1px solid var(--line);box-shadow:inset 0 0 0 1px rgba(255,255,255,.65)}.legend{display:grid;gap:8px}.legendItem{display:grid;grid-template-columns:18px 1fr auto;gap:8px;align-items:center}.legendColor{width:18px;height:18px;border-radius:4px}
-.cloud{min-height:130px;border:1px solid var(--line);border-radius:14px;background:#fbfdff;padding:14px;line-height:2.4;margin-bottom:26px}.cloud span{display:inline-block;margin:3px 8px;color:#1f2937;font-weight:800}.comments{display:grid;gap:10px}.comment{border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px}.commentMeta{font-size:13px;color:var(--muted);margin-bottom:4px}
+.cloud{min-height:130px;border:1px solid var(--line);border-radius:14px;background:#fbfdff;padding:14px;line-height:2.4;margin-bottom:18px}.cloud span{display:inline-block;margin:3px 8px;color:#1f2937;font-weight:800}.simpleSummary{border:1px solid #bfdbfe;background:#eff6ff;border-radius:14px;padding:16px;line-height:1.9;margin-bottom:26px}.simpleSummary ul{margin:8px 0 0 1.2em;padding:0}.simpleSummary li{margin:4px 0}.comments{display:grid;gap:10px}.comment{border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px}.commentMeta{font-size:13px;color:var(--muted);margin-bottom:4px}
 .nav{display:flex;justify-content:space-between;gap:12px;margin-top:18px}.nav button{border:0;border-radius:14px;background:#334155;color:#fff;font-weight:800;font-size:17px;padding:13px 22px;cursor:pointer}.nav button.secondary{background:#e5e7eb;color:#374151}.nav .spacer{flex:1}.teacher{background:#fffbeb;border:1px solid #fde68a}.toolBtns{display:flex;gap:8px;flex-wrap:wrap}.toolBtns button{border:1px solid #d1d5db;background:#fff;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
-@media(max-width:800px){.choices{grid-template-columns:1fr}.pieWrap{grid-template-columns:1fr}.pieChart{margin:auto}.barLine{grid-template-columns:118px 1fr 54px}.wrap,main{padding-left:12px;padding-right:12px}.card{padding:18px}}
+@media(max-width:800px){.choices{grid-template-columns:1fr}.pieWrap{grid-template-columns:1fr}.pieChart{margin:auto}.barLine{grid-template-columns:150px 1fr 54px}.barLine > div:first-child{white-space:nowrap;font-size:13px}.wrap,main{padding-left:12px;padding-right:12px}.card{padding:18px}}
 </style>
 </head>
 <body>
-<header><div class="wrap"><h1>生成AIと情報社会のジレンマ</h1><div class="small">各テーマで「自分の考えに近いもの」を選び、理由を投稿しましょう。</div><div id="connection" class="status">Firebaseに接続中...</div></div></header>
+<header><div class="wrap"><h1>生成AIと情報社会のジレンマ</h1><div id="connection" class="status">Firebaseに接続中...</div></div></header>
 <main id="app"></main>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
@@ -130,7 +130,7 @@ function renderOthers(id){
   list.forEach(s=>{if(counts[s.choice]!==undefined)counts[s.choice]++});
   const mode=graphMode[id]||'bar';const chart=mode==='pie'?pieChartHTML(counts,total):barChartHTML(counts,total);
   const comments=list.slice().reverse().map(s=>`<div class="comment"><div class="commentMeta">${escapeHTML(s.choice)}・${formatTime(s.createdAt)}</div>${escapeHTML(s.comment).replace(/\n/g,'<br>')}</div>`).join('')||'<p class="small">まだ投稿はありません。</p>';
-  el.innerHTML=`<h3>投稿状況</h3><p class="small">投稿数：${total}件</p><div class="chartTools"><button class="${mode==='bar'?'active':''}" onclick="setGraphMode('${id}','bar')">棒グラフ</button><button class="${mode==='pie'?'active':''}" onclick="setGraphMode('${id}','pie')">円グラフ</button></div><div class="chartArea">${chart}</div><h3>ワードクラウド</h3><div class="cloud">${wordCloud(list)}</div><h3>コメント一覧</h3><div class="comments">${comments}</div>`;
+  el.innerHTML=`<h3>投稿状況</h3><p class="small">投稿数：${total}件</p><div class="chartTools"><button class="${mode==='bar'?'active':''}" onclick="setGraphMode('${id}','bar')">棒グラフ</button><button class="${mode==='pie'?'active':''}" onclick="setGraphMode('${id}','pie')">円グラフ</button></div><div class="chartArea">${chart}</div><h3>ワードクラウド</h3><div class="cloud">${wordCloud(list)}</div><h3>AIによる簡易要約</h3><div class="simpleSummary">${simpleSummaryHTML(list, counts, total)}</div><h3>コメント一覧</h3><div class="comments">${comments}</div>`;
 }
 window.setGraphMode=function(id,mode){graphMode[id]=mode;localStorage.setItem('aiDilemma_graphMode',JSON.stringify(graphMode));renderOthers(id)}
 function barChartHTML(counts,total){return `<div class="bars">${choices.map(c=>{const pct=total?Math.round(counts[c]/total*100):0;return `<div class="barLine"><div>${c}</div><div class="barBg"><div class="bar" style="width:${pct}%;background:${colorOf(c)}"></div></div><div>${counts[c]}件</div></div>`}).join('')}</div>`}
@@ -138,8 +138,23 @@ function pieChartHTML(counts,total){
   if(!total)return '<p class="small">投稿が増えると円グラフを表示します。</p>';
   let start=0;const segments=choices.map(c=>{const deg=counts[c]/total*360;const seg=`${colorOf(c)} ${start}deg ${start+deg}deg`;start+=deg;return seg;}).join(', ');
   const legend=choices.map(c=>{const pct=total?Math.round(counts[c]/total*100):0;return `<div class="legendItem"><span class="legendColor" style="background:${colorOf(c)}"></span><span>${c}</span><strong>${counts[c]}件（${pct}%）</strong></div>`}).join('');
-  return `<div class="pieWrap"><div class="pieChart" style="background:conic-gradient(from 0deg, ${segments})"></div><div class="legend">${legend}<p class="small">円グラフは、上から右回りに「あり」→「どちらかといえばあり」→「どちらかといえばなし」→「なし」の順で表示しています。</p></div></div>`;
+  return `<div class="pieWrap"><div class="pieChart" style="background:conic-gradient(from 0deg, ${segments})"></div><div class="legend">${legend}</div></div>`;
 }
+
+function simpleSummaryHTML(list, counts, total){
+  if(!total)return '投稿が増えると、全体の傾向をここに表示します。';
+  const yes=counts['あり']+counts['どちらかといえばあり'];
+  const no=counts['どちらかといえばなし']+counts['なし'];
+  const topChoice=choices.slice().sort((a,b)=>counts[b]-counts[a])[0];
+  const topChoicePct=Math.round(counts[topChoice]/total*100);
+  let tendency='肯定寄りと否定寄りがほぼ同数です。';
+  if(yes>no)tendency='肯定寄りの意見が多く見られます。';
+  if(no>yes)tendency='否定寄りの意見が多く見られます。';
+  const words=topWords(list,6).map(([w])=>w);
+  const wordText=words.length?words.join('、'):'特徴的な語はまだ十分に抽出できません。';
+  return `<ul><li>投稿数は${total}件です。最も多い選択肢は「${escapeHTML(topChoice)}」で、${counts[topChoice]}件（${topChoicePct}%）です。</li><li>${tendency}</li><li>コメントでは「${escapeHTML(wordText)}」などの語が比較的多く使われています。</li></ul>`;
+}
+
 function topWords(list,n){const stop='です ます した する ある いる こと もの よう ため これ それ あれ この その どの 思う 思います 生成 AI Aさん さん あり なし どちらか といえば 自分'.split(' ');const freq={};list.forEach(s=>{(String(s.comment||'').match(/[ぁ-んァ-ヶ一-龠A-Za-z0-9]{2,}/g)||[]).forEach(w=>{if(!stop.includes(w))freq[w]=(freq[w]||0)+1})});return Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,n)}
 function wordCloud(list){const words=topWords(list,35);if(!words.length)return '<span class="small">コメントが増えると表示されます。</span>';const max=Math.max(...words.map(w=>w[1]));return words.map(([w,n])=>`<span style="font-size:${14+Math.round(n/max*26)}px">${escapeHTML(w)}</span>`).join('')}
 window.downloadCSV=function(){const all=themes.flatMap(t=>(submissionsByTheme[t.id]||[]).map(s=>[t.title,s.choice,s.comment,formatTime(s.createdAt)]));const rows=[['theme','choice','comment','time'],...all];const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ai_dilemma_submissions.csv';a.click();URL.revokeObjectURL(a.href)}
