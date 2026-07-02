@@ -5,19 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>生成AIと情報社会のジレンマ</title>
 <style>
-  :root{--bg:#f4f7fb;--card:#fff;--ink:#1f2937;--muted:#6b7280;--line:#d8dee9;--blue:#2563eb;--green:#16a34a;--lime:#65a30d;--orange:#f97316;--red:#dc2626;--gray:#e5e7eb;--grayText:#6b7280;--shadow:0 10px 28px rgba(15,23,42,.10)}
-  *{box-sizing:border-box}body{margin:0;font-family:"Yu Gothic","Meiryo",system-ui,sans-serif;background:linear-gradient(180deg,#eef5ff 0%,var(--bg) 52%,#fff 100%);color:var(--ink)}
-  header{background:rgba(255,255,255,.95);border-bottom:1px solid var(--line)}.wrap{max-width:1080px;margin:0 auto;padding:18px}
-  h1{font-size:clamp(24px,4vw,42px);margin:8px 0 6px;color:#0f2f5f}h2{font-size:clamp(22px,3vw,34px);margin:6px 0 14px}h3{font-size:22px;margin:24px 0 10px;border-left:8px solid var(--blue);padding-left:10px}p{line-height:1.85;font-size:18px}.small{font-size:14px;color:var(--muted)}
-  .status{display:inline-block;margin-top:8px;padding:7px 10px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-weight:700;font-size:13px}.status.err{background:#fef2f2;color:#991b1b}.status.ok{background:#ecfdf5;color:#166534}
-  main{max-width:1080px;margin:0 auto;padding:20px 18px 64px}.page{display:none}.page.active{display:block;animation:fade .25s ease}@keyframes fade{from{opacity:.2;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--shadow);margin:18px 0}.case{font-size:19px;background:#f8fafc;border-left:8px solid #93c5fd;padding:18px;border-radius:12px;white-space:pre-line}
-  .choices{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}.choice{border:0;border-radius:14px;padding:18px 10px;font-size:18px;font-weight:800;color:#fff;cursor:pointer;box-shadow:0 6px 14px rgba(0,0,0,.10);transition:.16s}.choice:hover{transform:translateY(-2px)}.choice[data-choice="あり"]{background:var(--green)}.choice[data-choice="どちらかといえばあり"]{background:var(--lime)}.choice[data-choice="どちらかといえばなし"]{background:var(--orange)}.choice[data-choice="なし"]{background:var(--red)}.choice.dim{background:var(--gray)!important;color:var(--grayText);box-shadow:none;filter:grayscale(.3);opacity:.72}.choice.selected{outline:5px solid #111827;outline-offset:3px;transform:scale(1.02)}
-  textarea{width:100%;min-height:150px;border:2px solid var(--line);border-radius:14px;padding:14px;font-size:17px;line-height:1.7;resize:vertical;background:#fff}textarea:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 4px #dbeafe}.counter{text-align:right;color:var(--muted);font-size:14px;margin-top:4px}
-  .submitRow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px}.submit{display:none;border:0;border-radius:14px;background:#1d4ed8;color:#fff;font-size:19px;font-weight:800;padding:14px 26px;cursor:pointer}.submit.show{display:inline-block}.submit:disabled{opacity:.5;cursor:not-allowed}.editBtn{border:1px solid var(--line);border-radius:14px;background:#fff;color:#374151;font-weight:700;padding:13px 20px;cursor:pointer}.hint{padding:10px 12px;background:#fef2f2;color:#991b1b;border-radius:10px;display:none}.hint.show{display:inline-block}.editNote{display:none;padding:10px 12px;background:#fffbeb;color:#92400e;border-radius:10px}.editNote.show{display:inline-block}
-  .myPost{display:none;background:#ecfdf5;border:1px solid #86efac;border-radius:16px;padding:16px;margin-top:18px}.myPost.show{display:block}.badge{display:inline-block;border-radius:999px;color:#fff;padding:7px 12px;font-weight:800;margin-bottom:8px}.badge.yes{background:var(--green)}.badge.maybeYes{background:var(--lime)}.badge.maybeNo{background:var(--orange)}.badge.no{background:var(--red)}
-  .toggle{border:0;border-radius:14px;background:#111827;color:#fff;font-weight:800;padding:13px 20px;cursor:pointer;margin-top:14px}.others{display:none;border-top:1px dashed var(--line);margin-top:18px;padding-top:18px}.others.show{display:block}.summaryGrid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:start}.chartTools{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}.chartArea{margin-bottom:22px}.chartTools button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-weight:800;cursor:pointer}.chartTools button.active{background:#1d4ed8;color:#fff;border-color:#1d4ed8}.summaryGrid > div{display:flex;flex-direction:column;align-self:start}.summaryGrid h3{margin-top:0}.bars{display:grid;gap:10px}.barLine{display:grid;grid-template-columns:150px 1fr 64px;gap:8px;align-items:center}.barBg{height:28px;background:#e5e7eb;border-radius:999px;overflow:hidden}.bar{height:100%;width:0%;border-radius:999px;transition:width .4s;background:#2563eb}.comments{display:grid;gap:10px}.comment{border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px}.commentMeta{font-size:13px;color:var(--muted);margin-bottom:4px}.pieWrap{display:grid;grid-template-columns:240px 1fr;gap:18px;align-items:center}.pieChart{width:220px;height:220px;border-radius:50%;border:1px solid var(--line);box-shadow:inset 0 0 0 1px rgba(255,255,255,.65)}.legend{display:grid;gap:8px}.legendItem{display:grid;grid-template-columns:18px 1fr auto;gap:8px;align-items:center}.legendColor{width:18px;height:18px;border-radius:4px}.cloud{min-height:130px;border:1px solid var(--line);border-radius:14px;background:#fbfdff;padding:14px;line-height:2}.cloud span{display:inline-block;margin:3px 8px;color:#1f2937;font-weight:800}
-  .nav{display:flex;justify-content:space-between;gap:12px;margin-top:18px}.nav button{border:0;border-radius:14px;background:#334155;color:#fff;font-weight:800;font-size:17px;padding:13px 22px;cursor:pointer}.nav button.secondary{background:#e5e7eb;color:#374151}.nav .spacer{flex:1}.nav button:disabled{opacity:.35;cursor:not-allowed}.teacher{background:#fffbeb;border:1px solid #fde68a}.toolBtns{display:flex;gap:8px;flex-wrap:wrap}.toolBtns button{border:1px solid #d1d5db;background:#fff;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}@media(max-width:800px){.choices{grid-template-columns:1fr}.summaryGrid{grid-template-columns:1fr}.pieWrap{grid-template-columns:1fr}.pieChart{margin:auto}.barLine{grid-template-columns:118px 1fr 54px}.wrap,main{padding-left:12px;padding-right:12px}.card{padding:18px}}
+:root{
+  --bg:#f4f7fb;--card:#fff;--ink:#1f2937;--muted:#6b7280;--line:#d8dee9;
+  --blue:#2563eb;--green:#16a34a;--lime:#65a30d;--orange:#f97316;--red:#dc2626;
+  --gray:#e5e7eb;--grayText:#6b7280;--shadow:0 10px 28px rgba(15,23,42,.10)
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Yu Gothic","Meiryo",system-ui,sans-serif;background:linear-gradient(180deg,#eef5ff 0%,var(--bg) 52%,#fff 100%);color:var(--ink)}
+header{background:rgba(255,255,255,.95);border-bottom:1px solid var(--line)}
+.wrap{max-width:1080px;margin:0 auto;padding:18px}
+h1{font-size:clamp(24px,4vw,42px);margin:8px 0 6px;color:#0f2f5f}
+h2{font-size:clamp(22px,3vw,34px);margin:6px 0 14px}
+h3{font-size:22px;margin:24px 0 10px;border-left:8px solid var(--blue);padding-left:10px}
+p{line-height:1.85;font-size:18px}.small{font-size:14px;color:var(--muted)}
+.status{display:inline-block;margin-top:8px;padding:7px 10px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-weight:700;font-size:13px}.status.err{background:#fef2f2;color:#991b1b}.status.ok{background:#ecfdf5;color:#166534}
+main{max-width:1080px;margin:0 auto;padding:20px 18px 64px}.page{display:none}.page.active{display:block;animation:fade .25s ease}@keyframes fade{from{opacity:.2;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:var(--shadow);margin:18px 0}.case{font-size:19px;background:#f8fafc;border-left:8px solid #93c5fd;padding:18px;border-radius:12px;white-space:pre-line;line-height:1.85}
+.choices{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}.choice{border:0;border-radius:14px;padding:18px 10px;font-size:18px;font-weight:800;color:#fff;cursor:pointer;box-shadow:0 6px 14px rgba(0,0,0,.10);transition:.16s}.choice:hover{transform:translateY(-2px)}.choice:disabled{cursor:not-allowed}.choice[data-choice="あり"]{background:var(--green)}.choice[data-choice="どちらかといえばあり"]{background:var(--lime)}.choice[data-choice="どちらかといえばなし"]{background:var(--orange)}.choice[data-choice="なし"]{background:var(--red)}.choice.dim{background:var(--gray)!important;color:var(--grayText);box-shadow:none;filter:grayscale(.3);opacity:.72}.choice.selected{outline:5px solid #111827;outline-offset:3px;transform:scale(1.02)}
+textarea{width:100%;min-height:150px;border:2px solid var(--line);border-radius:14px;padding:14px;font-size:17px;line-height:1.7;resize:vertical;background:#fff}textarea:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 4px #dbeafe}.counter{text-align:right;color:var(--muted);font-size:14px;margin-top:4px}
+.submitRow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px}.submit{display:none;border:0;border-radius:14px;background:#1d4ed8;color:#fff;font-size:19px;font-weight:800;padding:14px 26px;cursor:pointer}.submit.show{display:inline-block}.submit:disabled{opacity:.5;cursor:not-allowed}.editBtn{border:1px solid var(--line);border-radius:14px;background:#fff;color:#374151;font-weight:700;padding:13px 20px;cursor:pointer}.hint{padding:10px 12px;background:#fef2f2;color:#991b1b;border-radius:10px;display:none}.hint.show{display:inline-block}.editNote{display:none;padding:10px 12px;background:#fffbeb;color:#92400e;border-radius:10px}.editNote.show{display:inline-block}
+.myPost{display:none;background:#ecfdf5;border:1px solid #86efac;border-radius:16px;padding:16px;margin-top:18px}.myPost.show{display:block}.badge{display:inline-block;border-radius:999px;color:#fff;padding:7px 12px;font-weight:800;margin-bottom:8px}.badge.yes{background:var(--green)}.badge.maybeYes{background:var(--lime)}.badge.maybeNo{background:var(--orange)}.badge.no{background:var(--red)}
+.toggle{border:0;border-radius:14px;background:#111827;color:#fff;font-weight:800;padding:13px 20px;cursor:pointer;margin-top:14px}.others{display:none;border-top:1px dashed var(--line);margin-top:18px;padding-top:18px}.others.show{display:block}
+.chartTools{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}.chartTools button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-weight:800;cursor:pointer}.chartTools button.active{background:#1d4ed8;color:#fff;border-color:#1d4ed8}.chartArea{margin-bottom:26px}.bars{display:grid;gap:10px}.barLine{display:grid;grid-template-columns:150px 1fr 64px;gap:8px;align-items:center}.barBg{height:28px;background:#e5e7eb;border-radius:999px;overflow:hidden}.bar{height:100%;width:0%;border-radius:999px;transition:width .4s;background:#2563eb}
+.pieWrap{display:grid;grid-template-columns:240px 1fr;gap:18px;align-items:center;margin-bottom:8px}.pieChart{width:220px;height:220px;border-radius:50%;border:1px solid var(--line);box-shadow:inset 0 0 0 1px rgba(255,255,255,.65)}.legend{display:grid;gap:8px}.legendItem{display:grid;grid-template-columns:18px 1fr auto;gap:8px;align-items:center}.legendColor{width:18px;height:18px;border-radius:4px}
+.cloud{min-height:130px;border:1px solid var(--line);border-radius:14px;background:#fbfdff;padding:14px;line-height:2.4;margin-bottom:26px}.cloud span{display:inline-block;margin:3px 8px;color:#1f2937;font-weight:800}.comments{display:grid;gap:10px}.comment{border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px}.commentMeta{font-size:13px;color:var(--muted);margin-bottom:4px}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:18px}.nav button{border:0;border-radius:14px;background:#334155;color:#fff;font-weight:800;font-size:17px;padding:13px 22px;cursor:pointer}.nav button.secondary{background:#e5e7eb;color:#374151}.nav .spacer{flex:1}.teacher{background:#fffbeb;border:1px solid #fde68a}.toolBtns{display:flex;gap:8px;flex-wrap:wrap}.toolBtns button{border:1px solid #d1d5db;background:#fff;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
+@media(max-width:800px){.choices{grid-template-columns:1fr}.pieWrap{grid-template-columns:1fr}.pieChart{margin:auto}.barLine{grid-template-columns:118px 1fr 54px}.wrap,main{padding-left:12px;padding-right:12px}.card{padding:18px}}
 </style>
 </head>
 <body>
@@ -42,7 +55,6 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
 let uid = null;
-
 const themes = [
   {id:'poster', title:'① 文化祭ポスターを生成AIで作る', short:'文化祭ポスター', case:`ある高校では毎年、文化祭ポスターを生徒から募集している。\n\nAさんは、絵を描くのが苦手だが、文化祭ポスターに挑戦したいと思い、画像生成AIで作成したポスターを提出した。\n\nその年は、10作品の応募があり、画像生成AIで作成したポスターはAさんの作品のみであった。\n\n在校生による投票が行われ、見事、Aさんのポスターが1位となり、その年の文化祭ポスターおよびパンフレットの表紙に採用された。`},
   {id:'report', title:'② 感想レポートを生成AIで書く', short:'感想レポート', case:`3つある科目では、毎回の授業で感想レポートの提出がある。\n\n「授業で取り組んだこと」「自分なりに工夫したこと」を、文章にして提出する。\n\n感想レポートの内容は、成績にかなり影響する。\n\n文章を書くのが苦手なAさんは、毎回の授業、テキスト生成AIで感想レポートを作成し提出した。\n\nその結果、学年末の成績は5であった。`},
@@ -53,70 +65,89 @@ const choiceClass = {'あり':'yes','どちらかといえばあり':'maybeYes',
 let currentIndex = Number(localStorage.getItem('aiDilemma_current')||0);
 let state = JSON.parse(localStorage.getItem('aiDilemma_state_firebase')||'{}');
 let submissionsByTheme = {poster:[], report:[], recommendation:[]};
-let authReady = false;
 let graphMode = JSON.parse(localStorage.getItem('aiDilemma_graphMode')||'{}');
+let authReady = false;
 
-function save(){localStorage.setItem('aiDilemma_state_firebase',JSON.stringify(state)); localStorage.setItem('aiDilemma_current',currentIndex)}
-function setStatus(text, cls=''){const el=document.getElementById('connection'); el.textContent=text; el.className='status '+cls}
-function render(){const appEl=document.getElementById('app'); appEl.innerHTML=themes.map((t,i)=>pageHTML(t,i)).join(''); themes.forEach(t=>updateUI(t.id)); document.querySelectorAll('.page').forEach((p,i)=>p.classList.toggle('active',i===currentIndex));}
+function save(){localStorage.setItem('aiDilemma_state_firebase',JSON.stringify(state));localStorage.setItem('aiDilemma_current',currentIndex)}
+function setStatus(text, cls=''){const el=document.getElementById('connection');el.textContent=text;el.className='status '+cls}
+function escapeHTML(s){return String(s||'').replace(/[&<>'"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m]))}
+function formatTime(ms){if(!ms)return '';try{return new Date(ms).toLocaleString('ja-JP')}catch{return ''}}
+function colorOf(c){return {'あり':'#16a34a','どちらかといえばあり':'#65a30d','どちらかといえばなし':'#f97316','なし':'#dc2626'}[c]||'#2563eb'}
+
+function render(){
+  document.getElementById('app').innerHTML=themes.map((t,i)=>pageHTML(t,i)).join('');
+  themes.forEach(t=>updateUI(t.id));
+  document.querySelectorAll('.page').forEach((p,i)=>p.classList.toggle('active',i===currentIndex));
+}
 function pageHTML(t,i){
   const st=state[t.id]||{};
-  const readonly = st.submitted && !st.editing;
-  const showReasonForm = !readonly;
-  const reasonForm = showReasonForm ? `<h3>理由</h3><textarea id="comment-${t.id}" placeholder="ここに理由を入力してください。" oninput="inputComment('${t.id}')">${escapeHTML(st.comment||'')}</textarea><div class="counter" id="counter-${t.id}"></div>` : '';
-  const actionArea = showReasonForm
-    ? `<div class="submitRow"><button class="submit" id="submit-${t.id}" onclick="submitTheme('${t.id}')">${st.submitted && st.editing?'再投稿する':'投稿する'}</button><span class="hint" id="hint-${t.id}">選択肢と理由の両方を入力すると投稿できます。</span><span class="editNote" id="editNote-${t.id}">修正後に「再投稿する」を押すと、投稿は累積されます。</span></div>`
-    : `<div class="submitRow"><button class="editBtn" id="edit-${t.id}" onclick="editTheme('${t.id}')">自分の投稿内容を修正する</button></div>`;
-  return `<section class="page" id="page-${t.id}"><div class="card"><h2>${t.title}</h2><div class="case">${escapeHTML(t.case)}</div><div class="choices">${choices.map(c=>`<button class="choice" data-choice="${c}" onclick="selectChoice('${t.id}','${c}')" ${readonly?'disabled':''}>${c}</button>`).join('')}</div>${reasonForm}${actionArea}<div class="myPost" id="my-${t.id}"></div><button class="toggle" id="toggle-${t.id}" onclick="toggleOthers('${t.id}')" style="display:none">ほかの人の投稿状況を表示する</button><div class="others" id="others-${t.id}"></div></div><div class="nav">${i===0?'<span class="spacer"></span>':`<button class="secondary" onclick="go(${i-1})">前のテーマへ</button>`}${i===themes.length-1?'':`<button onclick="go(${i+1})">次のテーマへ</button>`}</div>${i===themes.length-1?teacherTools():''}</section>`}
+  const readonly=st.submitted && !st.editing;
+  const showForm=!readonly;
+  const reasonForm=showForm?`<h3>理由</h3><textarea id="comment-${t.id}" placeholder="ここに理由を入力してください。" oninput="inputComment('${t.id}')">${escapeHTML(st.comment||'')}</textarea><div class="counter" id="counter-${t.id}"></div>`:'';
+  const actionArea=showForm?`<div class="submitRow"><button class="submit" id="submit-${t.id}" onclick="submitTheme('${t.id}')">${st.submitted&&st.editing?'再投稿する':'投稿する'}</button><span class="hint" id="hint-${t.id}">選択肢と理由の両方を入力すると投稿できます。</span><span class="editNote" id="editNote-${t.id}">修正後に「再投稿する」を押すと、投稿は累積されます。</span></div>`:`<div class="submitRow"><button class="editBtn" onclick="editTheme('${t.id}')">自分の投稿内容を修正する</button></div>`;
+  const nav=`<div class="nav">${i===0?'<span class="spacer"></span>':`<button class="secondary" onclick="go(${i-1})">前のテーマへ</button>`}${i===themes.length-1?'':`<button onclick="go(${i+1})">次のテーマへ</button>`}</div>`;
+  return `<section class="page" id="page-${t.id}"><div class="card"><h2>${t.title}</h2><div class="case">${escapeHTML(t.case)}</div><div class="choices">${choices.map(c=>`<button class="choice" data-choice="${c}" onclick="selectChoice('${t.id}','${c}')" ${readonly?'disabled':''}>${c}</button>`).join('')}</div>${reasonForm}${actionArea}<div class="myPost" id="my-${t.id}"></div><button class="toggle" id="toggle-${t.id}" onclick="toggleOthers('${t.id}')" style="display:none">ほかの人の投稿状況を表示する</button><div class="others" id="others-${t.id}"></div></div>${nav}${i===themes.length-1?teacherTools():''}</section>`;
+}
+function teacherTools(){return `<div class="card teacher"><h3>先生用</h3><p class="small">投稿データはFirebase Realtime Databaseに保存されます。授業開始前に過去データを消す場合は、Firebase ConsoleのRealtime Databaseから削除してください。</p><div class="toolBtns"><button onclick="downloadCSV()">CSVを書き出す</button></div></div>`}
 
-function teacherTools(){return `<div class="card teacher"><h3>先生用</h3><p class="small">このFirebase版は、投稿データをRealtime Databaseに保存します。授業開始前に過去データを消す場合は、Firebase ConsoleのRealtime Databaseから削除してください。CSVは、この画面で読み込めている投稿を出力します。</p><div class="toolBtns"><button onclick="downloadCSV()">CSVを書き出す</button></div></div>`}
-window.selectChoice=function(id,choice){if(state[id]?.submitted && !state[id]?.editing)return; state[id]=state[id]||{}; state[id].choice=choice; save(); updateUI(id)}
-window.inputComment=function(id){if(state[id]?.submitted && !state[id]?.editing)return; state[id]=state[id]||{}; state[id].comment=document.getElementById('comment-'+id).value; save(); updateUI(id)}
-function updateUI(id){const st=state[id]||{}; document.querySelectorAll(`#page-${id} .choice`).forEach(b=>{b.classList.remove('selected','dim'); if(st.choice){if(b.dataset.choice===st.choice)b.classList.add('selected'); else b.classList.add('dim')}}); const comment=document.getElementById('comment-'+id)?.value||st.comment||''; const ok=!!st.choice && comment.trim().length>0 && comment.trim().length<=500; const submit=document.getElementById('submit-'+id); if(submit){submit.classList.toggle('show',ok && (!st.submitted || st.editing)); submit.disabled=!authReady} document.getElementById('hint-'+id)?.classList.toggle('show',(!ok||!authReady)&&(!st.submitted || st.editing)); document.getElementById('editNote-'+id)?.classList.toggle('show',!!(st.submitted && st.editing)); const counter=document.getElementById('counter-'+id); if(counter)counter.textContent=`${comment.trim().length}/500文字`; renderMyPost(id); renderOthers(id)}
-window.submitTheme=async function(id){const comment=document.getElementById('comment-'+id).value.trim(); if(!authReady){setStatus('Firebase認証中です。ページを再読み込みしてください。','err');return} if(!state[id]?.choice || !comment || comment.length>500){updateUI(id);return} const item={choice:state[id].choice,comment,createdAt:Date.now(),uid}; try{const r=await push(ref(db,`submissions/${id}`),item); state[id]={choice:item.choice,comment:item.comment,submitted:true,editing:false,lastKey:r.key}; save(); render(); setStatus('Firebaseに接続済み','ok')}catch(e){console.error(e); setStatus('投稿に失敗しました。Firebase Rules と databaseURL を確認してください。','err'); alert('投稿に失敗しました。Firebase Rules と databaseURL を確認してください。') }}
-window.editTheme=function(id){state[id]=state[id]||{}; state[id].editing=true; save(); render()}
-function renderMyPost(id){const box=document.getElementById('my-'+id); const btn=document.getElementById('toggle-'+id); if(!box||!btn)return; const st=state[id]||{}; if(!st.submitted){box.classList.remove('show'); btn.style.display='none'; return} box.classList.add('show'); btn.style.display='inline-block'; const label = st.editing ? '現在修正中の自分の投稿内容' : '自分の投稿内容'; box.innerHTML=`<h3>${label}</h3><div class="badge ${choiceClass[st.choice]}">${st.choice}</div><p>${escapeHTML(st.comment).replace(/\n/g,'<br>')}</p>`}
-window.toggleOthers=function(id){const el=document.getElementById('others-'+id); const btn=document.getElementById('toggle-'+id); const shown=el.classList.toggle('show'); btn.textContent=shown?'ほかの人の投稿状況を折りたたむ':'ほかの人の投稿状況を表示する'}
+window.selectChoice=function(id,choice){if(state[id]?.submitted&&!state[id]?.editing)return;state[id]=state[id]||{};state[id].choice=choice;save();updateUI(id)}
+window.inputComment=function(id){if(state[id]?.submitted&&!state[id]?.editing)return;state[id]=state[id]||{};const ta=document.getElementById('comment-'+id);state[id].comment=ta?ta.value:'';save();updateUI(id)}
+window.editTheme=function(id){state[id]=state[id]||{};state[id].editing=true;save();render()}
+window.go=function(i){if(i<0||i>=themes.length)return;currentIndex=i;save();render();window.scrollTo({top:0,behavior:'smooth'})}
+
+function updateUI(id){
+  const st=state[id]||{};
+  document.querySelectorAll(`#page-${id} .choice`).forEach(b=>{b.classList.remove('selected','dim');if(st.choice){if(b.dataset.choice===st.choice)b.classList.add('selected');else b.classList.add('dim')}});
+  const ta=document.getElementById('comment-'+id);
+  const comment=(ta?ta.value:st.comment)||'';
+  const ok=!!st.choice && comment.trim().length>0 && comment.trim().length<=500;
+  const submit=document.getElementById('submit-'+id);
+  if(submit){submit.classList.toggle('show',ok && (!st.submitted||st.editing));submit.disabled=!authReady}
+  document.getElementById('hint-'+id)?.classList.toggle('show',(!ok||!authReady)&&(!st.submitted||st.editing));
+  document.getElementById('editNote-'+id)?.classList.toggle('show',!!(st.submitted&&st.editing));
+  const counter=document.getElementById('counter-'+id);if(counter)counter.textContent=`${comment.trim().length}/500文字`;
+  renderMyPost(id);renderOthers(id);
+}
+window.submitTheme=async function(id){
+  const ta=document.getElementById('comment-'+id);const comment=(ta?ta.value:'').trim();
+  if(!authReady){setStatus('Firebase認証中です。ページを再読み込みしてください。','err');return}
+  if(!state[id]?.choice || !comment || comment.length>500){updateUI(id);return}
+  const item={choice:state[id].choice, comment, createdAt:Date.now(), uid};
+  try{const r=await push(ref(db,`submissions/${id}`),item);state[id]={choice:item.choice,comment:item.comment,submitted:true,editing:false,lastKey:r.key};save();render();setStatus('Firebaseに接続済み','ok')}
+  catch(e){console.error(e);setStatus('投稿に失敗しました。Firebase Rules と databaseURL を確認してください。','err');alert('投稿に失敗しました。Firebase Rules と databaseURL を確認してください。')}
+}
+function renderMyPost(id){
+  const box=document.getElementById('my-'+id);const btn=document.getElementById('toggle-'+id);if(!box||!btn)return;const st=state[id]||{};
+  if(!st.submitted){box.classList.remove('show');btn.style.display='none';return}
+  box.classList.add('show');btn.style.display='inline-block';
+  box.innerHTML=`<h3>${st.editing?'現在修正中の自分の投稿内容':'自分の投稿内容'}</h3><div class="badge ${choiceClass[st.choice]}">${st.choice}</div><p>${escapeHTML(st.comment).replace(/\n/g,'<br>')}</p>`;
+}
+window.toggleOthers=function(id){const el=document.getElementById('others-'+id);const btn=document.getElementById('toggle-'+id);const shown=el.classList.toggle('show');btn.textContent=shown?'ほかの人の投稿状況を折りたたむ':'ほかの人の投稿状況を表示する'}
+
 function renderOthers(id){
-  const el=document.getElementById('others-'+id);
-  if(!el)return;
-  const list=submissionsByTheme[id]||[];
-  const total=list.length;
-  const counts=Object.fromEntries(choices.map(c=>[c,0]));
+  const el=document.getElementById('others-'+id);if(!el)return;
+  const list=submissionsByTheme[id]||[];const total=list.length;const counts=Object.fromEntries(choices.map(c=>[c,0]));
   list.forEach(s=>{if(counts[s.choice]!==undefined)counts[s.choice]++});
-  const mode=graphMode[id]||'bar';
-  const chart=mode==='pie'?pieChartHTML(counts,total):barChartHTML(counts,total);
-  const comments=list.slice().reverse().map(s=>`<div class="comment"><div class="commentMeta">${escapeHTML(s.choice)}・${formatTime(s.createdAt)}</div>${escapeHTML(s.comment).replace(/
-/g,'<br>')}</div>`).join('')||'<p class="small">まだ投稿はありません。</p>';
-  el.innerHTML=`<h3>投稿状況</h3><p class="small">投稿数：${total}件</p><div class="chartTools"><button class="${mode==='bar'?'active':''}" onclick="setGraphMode('${id}','bar')">棒グラフ</button><button class="${mode==='pie'?'active':''}" onclick="setGraphMode('${id}','pie')">円グラフ</button></div><div class="chartArea">${chart}</div><h3>ワードクラウド</h3><div class="cloud">${wordCloud(list)}</div><h3>コメント一覧</h3><div class="comments">${comments}</div>`
+  const mode=graphMode[id]||'bar';const chart=mode==='pie'?pieChartHTML(counts,total):barChartHTML(counts,total);
+  const comments=list.slice().reverse().map(s=>`<div class="comment"><div class="commentMeta">${escapeHTML(s.choice)}・${formatTime(s.createdAt)}</div>${escapeHTML(s.comment).replace(/\n/g,'<br>')}</div>`).join('')||'<p class="small">まだ投稿はありません。</p>';
+  el.innerHTML=`<h3>投稿状況</h3><p class="small">投稿数：${total}件</p><div class="chartTools"><button class="${mode==='bar'?'active':''}" onclick="setGraphMode('${id}','bar')">棒グラフ</button><button class="${mode==='pie'?'active':''}" onclick="setGraphMode('${id}','pie')">円グラフ</button></div><div class="chartArea">${chart}</div><h3>ワードクラウド</h3><div class="cloud">${wordCloud(list)}</div><h3>コメント一覧</h3><div class="comments">${comments}</div>`;
 }
-
-window.setGraphMode=function(id,mode){graphMode[id]=mode; localStorage.setItem('aiDilemma_graphMode',JSON.stringify(graphMode)); renderOthers(id)}
-function barChartHTML(counts,total){return `<div class="bars">${choices.map(c=>{const pct=total?Math.round(counts[c]/total*100):0; return `<div class="barLine"><div>${c}</div><div class="barBg"><div class="bar" style="width:${pct}%;background:${colorOf(c)}"></div></div><div>${counts[c]}件</div></div>`}).join('')}</div>`}
+window.setGraphMode=function(id,mode){graphMode[id]=mode;localStorage.setItem('aiDilemma_graphMode',JSON.stringify(graphMode));renderOthers(id)}
+function barChartHTML(counts,total){return `<div class="bars">${choices.map(c=>{const pct=total?Math.round(counts[c]/total*100):0;return `<div class="barLine"><div>${c}</div><div class="barBg"><div class="bar" style="width:${pct}%;background:${colorOf(c)}"></div></div><div>${counts[c]}件</div></div>`}).join('')}</div>`}
 function pieChartHTML(counts,total){
-  if(!total){return '<p class="small">投稿が増えると円グラフを表示します。</p>'}
-  let start=0;
-  const segments=choices.map(c=>{
-    const deg=counts[c]/total*360;
-    const seg=`${colorOf(c)} ${start}deg ${start+deg}deg`;
-    start+=deg;
-    return seg;
-  }).join(', ');
-  const legend=choices.map(c=>{const pct=total?Math.round(counts[c]/total*100):0; return `<div class="legendItem"><span class="legendColor" style="background:${colorOf(c)}"></span><span>${c}</span><strong>${counts[c]}件（${pct}%）</strong></div>`}).join('');
-  return `<div class="pieWrap"><div class="pieChart" style="background:conic-gradient(from 0deg, ${segments})" title="あり、どちらかといえばあり、どちらかといえばなし、なしの順で右回りに表示"></div><div class="legend">${legend}<p class="small">円グラフは、上から右回りに「あり」→「どちらかといえばあり」→「どちらかといえばなし」→「なし」の順で表示しています。</p></div></div>`
+  if(!total)return '<p class="small">投稿が増えると円グラフを表示します。</p>';
+  let start=0;const segments=choices.map(c=>{const deg=counts[c]/total*360;const seg=`${colorOf(c)} ${start}deg ${start+deg}deg`;start+=deg;return seg;}).join(', ');
+  const legend=choices.map(c=>{const pct=total?Math.round(counts[c]/total*100):0;return `<div class="legendItem"><span class="legendColor" style="background:${colorOf(c)}"></span><span>${c}</span><strong>${counts[c]}件（${pct}%）</strong></div>`}).join('');
+  return `<div class="pieWrap"><div class="pieChart" style="background:conic-gradient(from 0deg, ${segments})"></div><div class="legend">${legend}<p class="small">円グラフは、上から右回りに「あり」→「どちらかといえばあり」→「どちらかといえばなし」→「なし」の順で表示しています。</p></div></div>`;
 }
+function topWords(list,n){const stop='です ます した する ある いる こと もの よう ため これ それ あれ この その どの 思う 思います 生成 AI Aさん さん あり なし どちらか といえば 自分'.split(' ');const freq={};list.forEach(s=>{(String(s.comment||'').match(/[ぁ-んァ-ヶ一-龠A-Za-z0-9]{2,}/g)||[]).forEach(w=>{if(!stop.includes(w))freq[w]=(freq[w]||0)+1})});return Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,n)}
+function wordCloud(list){const words=topWords(list,35);if(!words.length)return '<span class="small">コメントが増えると表示されます。</span>';const max=Math.max(...words.map(w=>w[1]));return words.map(([w,n])=>`<span style="font-size:${14+Math.round(n/max*26)}px">${escapeHTML(w)}</span>`).join('')}
+window.downloadCSV=function(){const all=themes.flatMap(t=>(submissionsByTheme[t.id]||[]).map(s=>[t.title,s.choice,s.comment,formatTime(s.createdAt)]));const rows=[['theme','choice','comment','time'],...all];const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ai_dilemma_submissions.csv';a.click();URL.revokeObjectURL(a.href)}
+function listenTheme(id){onValue(ref(db,`submissions/${id}`),(snapshot)=>{const val=snapshot.val()||{};submissionsByTheme[id]=Object.entries(val).map(([key,v])=>({key,...v})).filter(v=>choices.includes(v.choice)&&typeof v.comment==='string');updateUI(id)},(error)=>{console.error(error);setStatus('Firebaseから読み取れません。Rulesを確認してください。','err')})}
 
-function topWords(list,n){const stop='です ます した する ある いる こと もの よう ため これ それ あれ この その どの 思う 思います 生成 AI Aさん さん あり なし どちらか といえば 自分'.split(' '); const freq={}; list.forEach(s=>{(String(s.comment||'').match(/[ぁ-んァ-ヶ一-龠A-Za-z0-9]{2,}/g)||[]).forEach(w=>{if(!stop.includes(w))freq[w]=(freq[w]||0)+1})}); return Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,n)}
-function wordCloud(list){const words=topWords(list,35); if(!words.length)return '<span class="small">コメントが増えると表示されます。</span>'; const max=Math.max(...words.map(w=>w[1])); return words.map(([w,n])=>`<span style="font-size:${14+Math.round(n/max*26)}px">${escapeHTML(w)}</span>`).join('')}
-function colorOf(c){return {'あり':'#16a34a','どちらかといえばあり':'#65a30d','どちらかといえばなし':'#f97316','なし':'#dc2626'}[c]||'#2563eb'}
-window.go=function(i){if(i<0||i>=themes.length)return; currentIndex=i; save(); render(); window.scrollTo({top:0,behavior:'smooth'})}
-window.downloadCSV=function(){const all=themes.flatMap(t=>(submissionsByTheme[t.id]||[]).map(s=>[t.title,s.choice,s.comment,formatTime(s.createdAt)])); const rows=[['theme','choice','comment','time'],...all]; const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n'); const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='ai_dilemma_submissions.csv'; a.click(); URL.revokeObjectURL(a.href)}
-function formatTime(ms){if(!ms)return ''; try{return new Date(ms).toLocaleString('ja-JP')}catch{return ''}}
-function escapeHTML(s){return String(s||'').replace(/[&<>'"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m]))}
-function listenTheme(id){onValue(ref(db,`submissions/${id}`),(snapshot)=>{const val=snapshot.val()||{}; submissionsByTheme[id]=Object.entries(val).map(([key,v])=>({key,...v})).filter(v=>choices.includes(v.choice)&&typeof v.comment==='string'); updateUI(id);},(error)=>{console.error(error); setStatus('Firebaseから読み取れません。Rulesを確認してください。','err')})}
 render();
-signInAnonymously(auth).catch(e=>{console.error(e); setStatus('匿名ログインに失敗しました。Authenticationの匿名・apiKeyを確認してください。','err')});
-onAuthStateChanged(auth,user=>{if(user){uid=user.uid; authReady=true; setStatus('Firebaseに接続済み','ok'); themes.forEach(t=>listenTheme(t.id)); themes.forEach(t=>updateUI(t.id));}});
+signInAnonymously(auth).catch(e=>{console.error(e);setStatus('匿名ログインに失敗しました。Authenticationの匿名・apiKeyを確認してください。','err')});
+onAuthStateChanged(auth,user=>{if(user){uid=user.uid;authReady=true;setStatus('Firebaseに接続済み','ok');themes.forEach(t=>listenTheme(t.id));themes.forEach(t=>updateUI(t.id))}});
 </script>
 </body>
 </html>
