@@ -107,13 +107,13 @@ function openingPageHTML(t,i){
   return `<section class="page" id="page-opening"><div class="card"><h2>生成AIと情報社会のジレンマ</h2><div class="openingLead">生成AIは、文章や画像を作ったり、学習や仕事を手助けしたりできる便利な技術です。<br><br>一方で、使い方によっては、公平性、評価、責任、著作権、信頼性などについて考える必要があります。<br><br>これから3つの事例を通して、生成AIをどのように使うべきか、情報社会の中でどのようなルールや考え方が必要かを考えていきましょう。</div><div class="submitRow"><button class="startBtn" onclick="go(1)">開始する</button></div></div></section>`;
 }
 function portfolioPageHTML(t,i){
-  return `<section class="page" id="page-portfolio"><div class="card"><h2>⑤ ポートフォリオ</h2><p>これまでの3つのテーマとまとめの内容を、1ページに整理しました。</p><div id="portfolioContent">${portfolioHTML()}</div><div class="submitRow"><button class="pdfBtn" onclick="window.print()">PDFとして保存する</button><button class="pdfBtn" id="lmsSubmitBtn" onclick="submitPortfolioToLMS()">LMSに提出</button></div><p id="lmsSubmitStatus" class="small"></p></div><div class="nav"><button class="secondary" onclick="go(${i-1})">前のページへ</button></div></section>`;
+  return `<section class="page" id="page-portfolio"><div class="card"><h2>⑤ ポートフォリオ</h2><div id="portfolioContent">${portfolioHTML()}</div><div class="submitRow"><button class="pdfBtn" id="lmsSubmitBtn" onclick="submitPortfolioToLMS()">LMSに提出</button><button class="pdfBtn" onclick="window.print()">PDFとして保存</button></div><p id="lmsSubmitStatus" class="small"></p></div><div class="nav"><button class="secondary" onclick="go(${i-1})">前のページへ</button></div></section>`;
 }
 
 function getMyRecord(id){return state[id]||{};}
 function portfolioHTML(){
   const blocks=[portfolioBlock('① 文化祭ポスターを生成AIで作る','poster'),portfolioBlock('② 感想レポートを生成AIで書く','report'),portfolioBlock('③ 推薦文を生成AIで書く','recommendation'),portfolioBlock('④ まとめ','reflection')].join('');
-  return `${blocks}<h3>最終まとめ</h3><div class="finalSummary">${finalPortfolioSummary()}</div>`;
+  return `${blocks}<h3>AIによるコメント</h3><div class="finalSummary">${aiPortfolioComment()}</div>`;
 }
 function portfolioBlock(title,id){
   const r=getMyRecord(id);
@@ -123,15 +123,39 @@ function portfolioBlock(title,id){
   const label=isReflection?'まとめ':'理由';
   return `<div class="portfolioBlock"><h3>${title}</h3>${choiceHTML}<h4>${label}</h4><div class="portfolioText">${escapeHTML(r.comment||'')}</div></div>`;
 }
-function finalPortfolioSummary(){
+function aiPortfolioComment(){
   const p=getMyRecord('poster'), r=getMyRecord('report'), rec=getMyRecord('recommendation'), ref=getMyRecord('reflection');
-  const lines=[];
-  if(p.submitted)lines.push(`文化祭ポスターでは「${p.choice}」と考えました。`);
-  if(r.submitted)lines.push(`感想レポートでは「${r.choice}」と考えました。`);
-  if(rec.submitted)lines.push(`推薦文では「${rec.choice}」と考えました。`);
-  if(ref.submitted)lines.push(`まとめでは、次のように考えを整理しました。\n${ref.comment}`);
-  if(!lines.length)return 'まだ投稿がありません。各ページに回答すると、ここに自分の考えの流れが表示されます。';
-  return escapeHTML(lines.join('\n\n')).replace(/\n/g,'<br>');
+  const submitted=[p,r,rec,ref].filter(x=>x&&x.submitted).length;
+  if(!submitted)return 'まだ投稿がありません。各ページに回答すると、ここにAIによるコメントが表示されます。';
+
+  const comments=[p.comment,r.comment,rec.comment,ref.comment].filter(Boolean).join('\n');
+  const yesCount=[p,r,rec].filter(x=>x&&x.submitted&&(x.choice==='あり'||x.choice==='どちらかといえばあり')).length;
+  const noCount=[p,r,rec].filter(x=>x&&x.submitted&&(x.choice==='どちらかといえばなし'||x.choice==='なし')).length;
+
+  const perspectives=[];
+  const addIf=(label, words)=>{if(words.some(w=>comments.includes(w)))perspectives.push(label)};
+  addIf('公平性', ['公平','不公平','平等','差','ずるい','有利','不利']);
+  addIf('評価の妥当性', ['評価','成績','採点','推薦','入試','合格','努力']);
+  addIf('責任や説明', ['責任','説明','誰','担任','学校','先生','本人']);
+  addIf('創造性や自分らしさ', ['創造','自分','個性','作品','表現','工夫','オリジナル']);
+  addIf('ルールづくり', ['ルール','基準','禁止','許可','条件','明記','使い方']);
+  addIf('学びへの影響', ['学び','理解','考え','成長','力','苦手','文章']);
+
+  if(!perspectives.length){
+    perspectives.push('生成AIの便利さと、その使い方によって生じる迷いや課題');
+  }
+
+  let stance='肯定・否定のどちらか一方に決めつけず、事例ごとに判断しようとしている';
+  if(yesCount>noCount)stance='生成AIの活用を比較的前向きに捉えながらも、条件や使い方を考えようとしている';
+  if(noCount>yesCount)stance='生成AIの活用に慎重な立場から、公平性や評価への影響を考えようとしている';
+
+  const themeNotes=[];
+  if(p.submitted)themeNotes.push(`文化祭ポスターでは「${p.choice}」という立場から、作品づくりにおけるAI利用を考えました。`);
+  if(r.submitted)themeNotes.push(`感想レポートでは「${r.choice}」という立場から、学習評価と本人の学びの関係を考えました。`);
+  if(rec.submitted)themeNotes.push(`推薦文では「${rec.choice}」という立場から、責任ある文章作成や信頼性について考えました。`);
+
+  const comment=`あなたは、3つの事例を通して、${stance}ことができています。特に「${perspectives.slice(0,3).join('」「')}」という視点から、生成AIを単に便利な道具として見るだけでなく、情報社会の中でどのような使い方が望ましいのかを整理しようとしています。\n\n${themeNotes.join('\n')}\n\nまとめの記述からは、生成AIを使うか使わないかだけでなく、目的、過程の透明性、評価との関係、周囲への影響を踏まえて判断することの大切さに気付いている様子が読み取れます。今後は、どの場面ならAIの利用を認めるのか、またそのときにどのようなルールや説明が必要なのかまで考えられると、さらに深い考察になります。`;
+  return escapeHTML(comment).replace(/\n/g,'<br>');
 }
 
 function teacherTools(){return `<div class="card teacher"><h3>先生用</h3><p class="small">投稿データはFirebase Realtime Databaseに保存されます。授業開始前に過去データを消す場合は、Firebase ConsoleのRealtime Databaseから削除してください。</p><div class="toolBtns"><button onclick="downloadCSV()">CSVを書き出す</button></div></div>`}
